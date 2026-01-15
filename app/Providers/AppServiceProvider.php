@@ -19,10 +19,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Force HTTPS in production
-        if ($this->app->environment('production') || request()->header('x-forwarded-proto') === 'https') {
-            \Illuminate\Support\Facades\URL::forceScheme('https');
-        }
+        // Log environment for debugging
+        \Illuminate\Support\Facades\Log::info('Environment: ' . app()->environment());
+        \Illuminate\Support\Facades\Log::info('APP_ENV: ' . env('APP_ENV', 'not-set'));
+        
+        // Force HTTPS in production - More aggressive approach
+        \Illuminate\Support\Facades\URL::forceScheme('https');
+        app()->instance('request', app('request')->setTrustedProxies(['*'], \Illuminate\Http\Request::HEADER_X_FORWARDED_ALL));
+        
+        \Illuminate\Support\Facades\Log::info('HTTPS forced');
     }
    
 
