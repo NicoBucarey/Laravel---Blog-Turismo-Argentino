@@ -19,15 +19,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Log environment for debugging
-        \Illuminate\Support\Facades\Log::info('Environment: ' . app()->environment());
-        \Illuminate\Support\Facades\Log::info('APP_ENV: ' . env('APP_ENV', 'not-set'));
-        
-        // Force HTTPS in production - More aggressive approach
+        // Simple and direct HTTPS forcing for production
         \Illuminate\Support\Facades\URL::forceScheme('https');
-        app()->instance('request', app('request')->setTrustedProxies(['*'], \Illuminate\Http\Request::HEADER_X_FORWARDED_ALL));
-        
-        \Illuminate\Support\Facades\Log::info('HTTPS forced');
     }
    
 
