@@ -19,8 +19,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Simple and direct HTTPS forcing for production
+        // Always force HTTPS
         \Illuminate\Support\Facades\URL::forceScheme('https');
+        
+        // Set trusted proxies for Railway
+        $this->app['request']->setTrustedProxies(['*'], 
+            \Illuminate\Http\Request::HEADER_X_FORWARDED_FOR |
+            \Illuminate\Http\Request::HEADER_X_FORWARDED_HOST |
+            \Illuminate\Http\Request::HEADER_X_FORWARDED_PORT |
+            \Illuminate\Http\Request::HEADER_X_FORWARDED_PROTO
+        );
     }
    
 
