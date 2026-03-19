@@ -9,10 +9,14 @@ use App\Http\Controllers\HomeController;
  */
 Route::get('/run-migrations', function () {
     try {
-        \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
-        return response()->json(['success' => 'Migrations ejecutadas correctamente']);
-    } catch (\Exception $e) {
-        return response()->json(['error' => 'Error: ' . $e->getMessage()], 500);
+        $exitCode = \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+        if ($exitCode === 0) {
+            return response()->json(['success' => 'Migrations ejecutadas correctamente', 'code' => $exitCode]);
+        } else {
+            return response()->json(['warning' => 'Migrations completadas con código: ' . $exitCode], 200);
+        }
+    } catch (\Throwable $e) {
+        return response()->json(['error' => $e->getMessage(), 'file' => $e->getFile(), 'line' => $e->getLine()], 500);
     }
 });
 
