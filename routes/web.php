@@ -5,6 +5,24 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 
 /**
+ * Endpoint de debug para verificar configuración
+ */
+Route::get('/debug-db', function () {
+    return response()->json([
+        'DB_HOST' => env('DB_HOST'),
+        'DB_PORT' => env('DB_PORT'),
+        'DB_DATABASE' => env('DB_DATABASE'),
+        'DB_USERNAME' => env('DB_USERNAME'),
+        'MYSQL_HOST' => env('MYSQL_HOST'),
+        'MYSQL_PORT' => env('MYSQL_PORT'),
+        'MYSQL_DATABASE' => env('MYSQL_DATABASE'),
+        'MYSQL_USER' => env('MYSQL_USER'),
+        'APP_ENV' => env('APP_ENV'),
+        'APP_DEBUG' => env('APP_DEBUG'),
+    ]);
+});
+
+/**
  * Endpoint temporal para ejecutar migrations
  */
 Route::get('/run-migrations', function () {
