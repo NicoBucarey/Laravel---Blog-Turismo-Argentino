@@ -5,40 +5,6 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 
 /**
- * Endpoint de debug para verificar configuración
- */
-Route::get('/debug-db', function () {
-    return response()->json([
-        'DB_HOST' => env('DB_HOST'),
-        'DB_PORT' => env('DB_PORT'),
-        'DB_DATABASE' => env('DB_DATABASE'),
-        'DB_USERNAME' => env('DB_USERNAME'),
-        'MYSQL_HOST' => env('MYSQL_HOST'),
-        'MYSQL_PORT' => env('MYSQL_PORT'),
-        'MYSQL_DATABASE' => env('MYSQL_DATABASE'),
-        'MYSQL_USER' => env('MYSQL_USER'),
-        'APP_ENV' => env('APP_ENV'),
-        'APP_DEBUG' => env('APP_DEBUG'),
-    ]);
-});
-
-/**
- * Endpoint temporal para ejecutar migrations
- */
-Route::get('/run-migrations', function () {
-    try {
-        $exitCode = \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
-        if ($exitCode === 0) {
-            return response()->json(['success' => 'Migrations ejecutadas correctamente', 'code' => $exitCode]);
-        } else {
-            return response()->json(['warning' => 'Migrations completadas con código: ' . $exitCode], 200);
-        }
-    } catch (\Throwable $e) {
-        return response()->json(['error' => $e->getMessage(), 'file' => $e->getFile(), 'line' => $e->getLine()], 500);
-    }
-});
-
-/**
  * Rutas públicas
  */
 // Home
