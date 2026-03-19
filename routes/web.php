@@ -5,6 +5,18 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 
 /**
+ * Endpoint temporal para ejecutar migrations
+ */
+Route::get('/run-migrations', function () {
+    try {
+        \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+        return response()->json(['success' => 'Migrations ejecutadas correctamente']);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Error: ' . $e->getMessage()], 500);
+    }
+});
+
+/**
  * Rutas públicas
  */
 // Home
