@@ -15,23 +15,34 @@
             </div>
         </nav>
 
-        <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 text-gray-800">Posts en {{ $category->name }}</h1>
-        <p class="text-gray-600 mb-6 md:mb-10 text-sm md:text-base">{{ $category->description }}</p>
+        <!-- Encabezado con color de categoría -->
+        @php
+            $colors = \App\Helpers\CategoryHelper::getCategoryColor($category->id);
+        @endphp
+        
+        <div class="{{ $colors['bg'] }} {{ $colors['text'] }} rounded-lg p-6 md:p-8 mb-8 md:mb-10 border-l-4 {{ str_replace('bg-', 'border-', $colors['badge']) == 'border-blue-500' ? 'border-blue-500' : (str_replace('bg-', 'border-', $colors['badge']) == 'border-purple-500' ? 'border-purple-500' : (str_replace('bg-', 'border-', $colors['badge']) == 'border-green-500' ? 'border-green-500' : (str_replace('bg-', 'border-', $colors['badge']) == 'border-yellow-500' ? 'border-yellow-500' : (str_replace('bg-', 'border-', $colors['badge']) == 'border-orange-500' ? 'border-orange-500' : 'border-red-500')))) }}">
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">Posts en {{ $category->name }}</h1>
+            <p class="text-sm md:text-base opacity-90">{{ $category->description }}</p>
+        </div>
 
         @forelse($category->posts as $post)
             <a href="{{ url('/posts/show/' . $post->id) }}" class="block mb-6 md:mb-8 bg-white rounded-lg shadow-md hover:shadow-xl transition-all overflow-hidden group">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-0">
                     <!-- Imagen -->
-                    <div class="md:col-span-1 overflow-hidden h-40 md:h-56">
+                    <div class="md:col-span-1 overflow-hidden h-40 md:h-56 relative">
                         @if($post->image_main)
                             <img src="{{ asset($post->image_main) }}" 
                                  alt="{{ $post->title }}" 
                                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                         @else
-                            <div class="w-full h-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
-                                <span class="text-white text-4xl">📍</span>
+                            <div class="w-full h-full {{ $colors['bg'] }} flex items-center justify-center">
+                                <span class="text-4xl">📍</span>
                             </div>
                         @endif
+                        <!-- Badge de categoría -->
+                        <div class="{{ $colors['badge'] }} text-white px-3 py-1 rounded-full text-xs font-semibold absolute top-3 right-3">
+                            {{ $category->name }}
+                        </div>
                     </div>
                     
                     <!-- Contenido -->

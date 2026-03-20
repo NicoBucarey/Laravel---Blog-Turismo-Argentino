@@ -36,15 +36,61 @@
             display: none;
         }
     }
+    
+    /* Back to top button styles */
+    #backToTop {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        transition: all 0.3s ease;
+        z-index: 40;
+        font-size: 24px;
+    }
+    
+    #backToTop:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    }
+    
+    #backToTop.show {
+        display: flex;
+    }
+    
+    @media (max-width: 640px) {
+        #backToTop {
+            width: 45px;
+            height: 45px;
+            bottom: 1rem;
+            right: 1rem;
+            font-size: 20px;
+        }
+    }
 </style>
 </head>
     <body class="flex flex-col min-h-full bg-gray-100 text-gray-800">
 
+<!-- Back to Top Button -->
+<button id="backToTop" aria-label="Volver al inicio">↑</button>
+
 <nav class="fixed top-0 left-0 right-0 bg-white shadow z-50 relative">
         <div class="px-4 py-4">
             <div class="flex justify-between items-center">
-                <!-- Nombre del Blog -->
-                <a href="/" class="text-xl md:text-2xl font-bold text-blue-600 whitespace-nowrap">Explorando Argentina</a>
+                <!-- Nombre del Blog con Logo -->
+                <a href="/" class="flex items-center space-x-2 text-xl md:text-2xl font-bold text-blue-600 whitespace-nowrap hover:text-blue-700 transition">
+                    <span class="text-2xl md:text-3xl">🇦🇷</span>
+                    <span>Explorando Argentina</span>
+                </a>
                 
                 <!-- Botón mobile menu -->
                 <button class="mobile-menu-btn text-gray-600 focus:outline-none" onclick="toggleMobileMenu()">
@@ -55,18 +101,18 @@
                 
                 <!-- Navegación Desktop -->
                 <ul class="nav-desktop flex space-x-4 md:space-x-6 items-center">
-                    <li><a href="/" class="text-sm md:text-base hover:text-blue-500">Inicio</a></li>
+                    <li><a href="/" class="text-sm md:text-base hover:text-blue-500 transition">Inicio</a></li>
                     @auth
-                        <li><a href="/posts/create" class="text-sm md:text-base hover:text-blue-500">Agregar Post</a></li>
+                        <li><a href="/posts/create" class="text-sm md:text-base hover:text-blue-500 transition">Agregar Post</a></li>
                         <li>
                             <form action="/logout" method="POST" class="inline">
                                 @csrf
-                                <button type="submit" class="text-sm md:text-base hover:text-red-500">Salir</button>
+                                <button type="submit" class="text-sm md:text-base hover:text-red-500 transition">Salir</button>
                             </form>
                         </li>
                     @else
-                        <li><a href="/login" class="text-sm md:text-base hover:text-blue-500">Iniciar sesión</a></li>
-                        <li><a href="/register" class="text-sm md:text-base hover:text-blue-500">Registrarse</a></li>
+                        <li><a href="/login" class="text-sm md:text-base hover:text-blue-500 transition">Iniciar sesión</a></li>
+                        <li><a href="/register" class="text-sm md:text-base hover:text-blue-500 transition">Registrarse</a></li>
                     @endauth
                 </ul>
             </div>
@@ -103,6 +149,24 @@
             const menu = document.getElementById('mobileMenu');
             menu.classList.toggle('active');
         }
+        
+        // Back to top button functionality
+        const backToTopButton = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('show');
+            } else {
+                backToTopButton.classList.remove('show');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
     </script>
     @stack('scripts')
 </body>
