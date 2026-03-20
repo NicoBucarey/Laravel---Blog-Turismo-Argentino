@@ -88,7 +88,7 @@
             <div class="flex justify-between items-center">
                 <!-- Nombre del Blog con Logo -->
                 <a href="/" class="flex items-center space-x-2 text-xl md:text-2xl font-bold text-blue-600 whitespace-nowrap hover:text-blue-700 transition">
-                    <span class="text-2xl md:text-3xl">🇦🇷</span>
+                    <span class="text-2xl md:text-3xl">🗺️</span>
                     <span>Explorando Argentina</span>
                 </a>
                 
