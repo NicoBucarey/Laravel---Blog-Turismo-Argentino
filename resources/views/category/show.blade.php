@@ -4,14 +4,6 @@
 
 @section('content')
     <div class="px-4 md:px-0">
-        <!-- Botón volver atrás -->
-        <div class="mb-6 md:mb-8">
-            <a href="{{ route('categories.index') }}" 
-               class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg transition text-sm md:text-base font-semibold">
-                ← Volver a categorías
-            </a>
-        </div>
-
         <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 text-gray-800">Posts en {{ $category->name }}</h1>
         <p class="text-gray-600 mb-6 md:mb-8 text-sm md:text-base">{{ $category->description }}</p>
 
@@ -29,5 +21,13 @@
                 <p class="text-gray-600 text-lg">No hay posts en esta categoría todavía.</p>
             </div>
         @endforelse
+
+        <!-- Botón volver atrás al final -->
+        <div class="border-t border-gray-200 pt-6 mt-8 md:mt-10">
+            <a href="{{ route('categories.index') }}" 
+               class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition text-sm md:text-base font-semibold">
+                ← Volver a categorías
+            </a>
+        </div>
     </div>
 @endsection
