@@ -59,17 +59,7 @@
 </form>
 
 </div>
-@endauth
 
-    <!-- Botón volver -->
-    <div>
-        <a href="{{ route('category.show', $post->category->id) }}" 
-           class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded transition">
-            ← Volver a la categoría
-        </a>
-    </div>
-
-</article>
 <script>
 document.getElementById('delete-button').addEventListener('click', function () {
     Swal.fire({
@@ -88,5 +78,16 @@ document.getElementById('delete-button').addEventListener('click', function () {
     });
 });
 </script>
+@endauth
+
+    <!-- Botón volver -->
+    <div>
+        <a href="{{ route('category.show', $post->category->id) }}" 
+           class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded transition">
+            ← Volver a la categoría
+        </a>
+    </div>
+
+</article>
 
 @endsection
