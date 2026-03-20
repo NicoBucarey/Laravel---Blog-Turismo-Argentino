@@ -17,72 +17,36 @@ Route::get('/run-migrations', function () {
 // Endpoint para configurar BD completamente
 Route::get('/setup-database', function () {
     try {
-        $db = \Illuminate\Support\Facades\DB::connection();
+        \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
         
-        // Crear tabla migrations
-        $db->statement("CREATE TABLE IF NOT EXISTS migrations (
-            id int unsigned AUTO_INCREMENT PRIMARY KEY,
-            migration varchar(255) NOT NULL,
-            batch int NOT NULL
-        )");
-        
-        // Crear tabla categories
-        $db->statement("CREATE TABLE IF NOT EXISTS categories (
-            id bigint unsigned AUTO_INCREMENT PRIMARY KEY,
-            name varchar(255) NOT NULL,
-            description varchar(255),
-            created_at timestamp NULL,
-            updated_at timestamp NULL
-        )");
-        
-        // Crear tabla posts
-        $db->statement("CREATE TABLE IF NOT EXISTS posts (
-            id bigint unsigned AUTO_INCREMENT PRIMARY KEY,
-            title varchar(255) NOT NULL,
-            excerpt varchar(255),
-            content text,
-            image_main varchar(255),
-            image_2 varchar(255),
-            image_3 varchar(255),
-            slug varchar(255) NOT NULL UNIQUE,
-            published tinyint DEFAULT 1,
-            category_id bigint unsigned NOT NULL,
-            created_at timestamp NULL,
-            updated_at timestamp NULL,
-            KEY category_id (category_id)
-        )");
-        
-        // Insertar categorías
+        // Insertar datos de ejemplo usando Eloquent
         $categories = [
-            ['Patagonia', 'Región del sur argentino'],
-            ['Cuyo', 'Tierra del vino'],
-            ['Litoral', 'Ríos y cataratas'],
-            ['Pampeana', 'Llanuras fértiles'],
-            ['Noroeste', 'Paisajes áridos'],
-            ['Noreste', 'Clima cálido']
+            ['name' => 'Patagonia', 'description' => 'Región del sur argentino con montañas, lagos y glaciares.'],
+            ['name' => 'Cuyo', 'description' => 'Tierra del vino y la cordillera en el oeste argentino.'],
+            ['name' => 'Litoral', 'description' => 'Ríos, selvas y cataratas en el noreste del país.'],
+            ['name' => 'Pampeana', 'description' => 'Llanuras fértiles, estancias y tradición gaucha.'],
+            ['name' => 'Noroeste', 'description' => 'Paisajes áridos, salares, quebradas y cultura andina.'],
+            ['name' => 'Noreste', 'description' => 'Clima cálido, ríos y gran diversidad natural.']
         ];
         
-        foreach ($categories as $i => $cat) {
-            $db->statement("INSERT IGNORE INTO categories (id, name, description) VALUES (?, ?, ?)", [$i+1, $cat[0], $cat[1]]);
+        foreach ($categories as $catData) {
+            \App\Models\Category::firstOrCreate(['name' => $catData['name']], $catData);
         }
         
-        // Insertar posts
-        $db->statement("INSERT IGNORE INTO posts (title, excerpt, slug, category_id, published) VALUES 
-            ('Glaciar Perito Moreno', 'Un glaciar impresionante', 'glaciar-perito-moreno', 1, 1),
-            ('Cataratas del Iguazú', 'Maravilla natural', 'cataratas-iguazu', 3, 1),
-            ('Aconcagua', 'Cerro más alto', 'aconcagua', 2, 1)
-        ");
+        // Insertar posts de ejemplo
+        $posts = [
+            ['title' => 'Glaciar Perito Moreno', 'slug' => 'glaciar-perito-moreno', 'category_id' => 1, 'excerpt' => 'Un impresionante glaciar', 'published' => 1],
+            ['title' => 'Cataratas del Iguazú', 'slug' => 'cataratas-iguazu', 'category_id' => 3, 'excerpt' => 'Maravilla natural', 'published' => 1],
+            ['title' => 'Aconcagua', 'slug' => 'aconcagua', 'category_id' => 2, 'excerpt' => 'Cerro más alto de América', 'published' => 1]
+        ];
         
-        // Insertar migrations
-        $db->statement("INSERT IGNORE INTO migrations (migration, batch) VALUES 
-            ('0001_01_01_000000_create_users_table', 1),
-            ('2025_06_06_135900_create_categories_table', 1),
-            ('2025_06_08_114224_create_posts_table', 1)
-        ");
+        foreach ($posts as $postData) {
+            \App\Models\Post::firstOrCreate(['slug' => $postData['slug']], $postData);
+        }
         
-        return response()->json(['success' => 'Base de datos configurada correctamente']);
+        return response()->json(['success' => 'Base de datos configurada correctamente', 'database' => env('DB_CONNECTION')]);
     } catch (\Exception $e) {
-        return response()->json(['error' => $e->getMessage(), 'line' => $e->getLine()], 500);
+        return response()->json(['error' => $e->getMessage(), 'line' => $e->getLine(), 'file' => $e->getFile()], 500);
     }
 });
 
