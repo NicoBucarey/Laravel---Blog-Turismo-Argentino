@@ -5,6 +5,19 @@
 @section('content')
 <article class="max-w-4xl mx-auto bg-white p-4 md:p-8 rounded-lg shadow px-4 md:px-0">
 
+    <!-- Breadcrumb -->
+    <nav class="mb-6 md:mb-8 text-xs md:text-sm">
+        <div class="flex items-center space-x-2 text-gray-600 flex-wrap">
+            <a href="/" class="text-blue-600 hover:text-blue-700 font-semibold">Inicio</a>
+            <span class="text-gray-400">›</span>
+            <a href="{{ route('categories.index') }}" class="text-blue-600 hover:text-blue-700 font-semibold">Categorías</a>
+            <span class="text-gray-400">›</span>
+            <a href="{{ route('category.show', $post->category->id) }}" class="text-blue-600 hover:text-blue-700 font-semibold">{{ $post->category->name }}</a>
+            <span class="text-gray-400">›</span>
+            <span class="text-gray-700 font-semibold truncate">{{ $post->title }}</span>
+        </div>
+    </nav>
+
     <!-- Imagen principal -->
     @if ($post->image_main)
         <img src="{{ asset($post->image_main) }}" alt="{{ $post->title }}" class="w-full h-40 sm:h-60 md:h-80 object-cover rounded-lg mb-6 shadow-md">
@@ -15,10 +28,11 @@
 
     <!-- Meta info -->
     <p class="text-xs sm:text-sm text-gray-500 mb-4 md:mb-6">
-        Categoría: 
+        <span class="inline-block">📍 Categoría: 
         <a href="{{ route('category.show', $post->category->id) }}" class="text-blue-600 hover:underline font-semibold">
             {{ $post->category->name }}
-        </a>
+        </a></span>
+        <span class="inline-block ml-4">📅 Publicado: {{ $post->created_at ? $post->created_at->format('d/m/Y') : 'N/A' }}</span>
     </p>
 
     <!-- Resumen -->
