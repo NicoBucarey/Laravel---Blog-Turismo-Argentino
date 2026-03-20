@@ -24,9 +24,9 @@ class AppServiceProvider extends ServiceProvider
             URL::forceScheme('https');
         }
 
-        // Auto-setup database if empty
+        // Auto-setup database if empty or incomplete
         try {
-            if (\App\Models\Post::count() === 0) {
+            if (\App\Models\Post::count() < 10) {
                 \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
                 \Illuminate\Support\Facades\Artisan::call('db:seed', ['--class' => 'Database\Seeders\DefaultDataSeeder', '--force' => true]);
             }
