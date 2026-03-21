@@ -89,7 +89,7 @@
             {{-- Noroeste --}}
             <a href="{{ route('category.show', 5) }}" class="group overflow-hidden rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
                 <div class="relative overflow-hidden h-48 sm:h-56 md:h-64">
-                    <img src="{{ asset('images/noroeste21.jpg') }}" 
+                    <img src="{{ asset('images/noroeste11.jpg') }}" 
                          alt="Noroeste" 
                          class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                     <div class="absolute inset-0 bg-black bg-opacity-30 group-hover:bg-opacity-40 transition-all duration-300"></div>
